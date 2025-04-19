@@ -20,7 +20,7 @@
                     + Buat Laporan
                 </a>
             </div>
-            <form method="GET" action="{{ route('user.reports') }}" class="mb-5 flex flex-col md:flex-row md:items-center md:space-x-4 space-y-4 md:space-y-0 mb-6">
+            {{-- <form method="GET" action="{{ route('user.reports') }}" class="mb-5 flex flex-col md:flex-row md:items-center md:space-x-4 space-y-4 md:space-y-0 mb-6">
                 <input type="text" name="search" placeholder="Cari pengaduan..." value="{{ request('search') }}"
                        class="border border-gray-300 rounded-lg p-2 w-full md:w-1/3 focus:ring-2 focus:ring-blue-500">
 
@@ -39,7 +39,40 @@
                 </select>
 
                 <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Cari</button>
-            </form>
+            </form> --}}
+            <!-- ...existing code... -->
+<form method="GET" action="{{ route('user.reports') }}" class="mb-5 flex flex-col md:flex-row md:items-center md:space-x-4 space-y-4 md:space-y-0 mb-6">
+    <input type="text" name="search" placeholder="Cari pengaduan..." value="{{ request('search') }}"
+           class="border border-gray-300 rounded-lg p-2 w-full md:w-1/3 focus:ring-2 focus:ring-blue-500">
+
+    <select name="type" class="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500">
+        <option value="">Semua Tipe</option>
+        @foreach ($types as $type)
+            <option value="{{ $type }}" {{ request('type') == $type ? 'selected' : '' }}>{{ $type }}</option>
+        @endforeach
+    </select>
+
+    <select name="province" class="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500">
+        <option value="">Semua Provinsi</option>
+        @foreach ($provinces as $province)
+            <option value="{{ $province }}" {{ request('province') == $province ? 'selected' : '' }}>{{ $province }}</option>
+        @endforeach
+    </select>
+
+    <select name="status" class="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500">
+    <option value="">Semua Status</option>
+    @foreach(['on_process', 'done', 'rejected'] as $status)
+        <option value="{{ $status }}" {{ request('status') == $status ? 'selected' : '' }}>
+            {{ $status === 'on_process' ? 'On Process' :
+               ($status === 'done' ? 'Done' :
+               ($status === 'rejected' ? 'Rejected' : ucfirst($status))) }}
+        </option>
+    @endforeach
+</select>
+
+    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Cari</button>
+</form>
+<!-- ...existing code... -->
 
             @if($reports->isEmpty())
                 <div class="text-gray-500 text-center py-20">

@@ -19,38 +19,60 @@ class ReportController extends Controller
     // }
 
     public function index(Request $request)
-    {
-        $sort = $request->input('sort', 'created_at');
-        $order = $request->input('order', 'asc');
-        $search = $request->input('search');
-        $filterType = $request->input('type');
-        $filterProvince = $request->input('province');
+{
+    $sort = $request->input('sort', 'created_at');
+    $order = $request->input('order', 'asc');
+    $search = $request->input('search');
+    $filterType = $request->input('type');
+    $filterProvince = $request->input('province');
+    $filterStatus = $request->input('status'); // Add this line
 
-        $reports = Report::query();
+    $reports = Report::query();
 
-        if ($search) {
-            $reports->where(function ($query) use ($search) {
-                $query->where('description', 'LIKE', "%{$search}%")
-                      ->orWhere('type', 'LIKE', "%{$search}%")
-                      ->orWhere('province', 'LIKE', "%{$search}%");
-            });
-        }
-
-        if ($filterType) {
-            $reports->where('type', $filterType);
-        }
-
-        if ($filterProvince) {
-            $reports->where('province', $filterProvince);
-        }
-
-        $reports = $reports->orderBy($sort, $order)->paginate(10);
-
-        $types = Report::select('type')->distinct()->pluck('type');
-        $provinces = Report::select('province')->distinct()->pluck('province');
-
-        return view('Reports.index', compact('reports', 'sort', 'order', 'types', 'provinces', 'filterType', 'filterProvince', 'search'));
+    if ($search) {
+        $reports->where(function ($query) use ($search) {
+            $query->where('description', 'LIKE', "%{$search}%")
+                  ->orWhere('type', 'LIKE', "%{$search}%")
+                  ->orWhere('province', 'LIKE', "%{$search}%");
+        });
     }
+
+    if ($filterType) {
+        $reports->where('type', $filterType);
+    }
+
+    if ($filterProvince) {
+        $reports->where('province', $filterProvince);
+    }
+
+    // Add this status filter condition
+    if ($filterStatus) {
+        if ($filterStatus === 'pending') {
+            $reports->whereNull('statement')->orWhere('statement', '');
+        } else {
+            $reports->where('statement', $filterStatus);
+        }
+    }
+
+    $reports = $reports->orderBy($sort, $order)->paginate(10);
+
+    $types = Report::select('type')->distinct()->pluck('type');
+    $provinces = Report::select('province')->distinct()->pluck('province');
+    $statuses = ['pending', 'on_process', 'done', 'rejected']; // Add this line
+
+    return view('Reports.index', compact(
+        'reports',
+        'sort',
+        'order',
+        'types',
+        'provinces',
+        'filterType',
+        'filterProvince',
+        'filterStatus', // Add this
+        'statuses', // Add this
+        'search'
+    ));
+}
 
     public function create()
     {

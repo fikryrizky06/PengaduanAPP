@@ -7,12 +7,12 @@
                 @csrf
 
                 <div>
-                    <label for="description" class="block font-medium text-gray-700 mb-1">Description</label>
+                    <label for="description" class="block font-medium text-gray-700 mb-1">Deskripsi</label>
                     <textarea name="description" id="description" rows="4" class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" required></textarea>
                 </div>
 
                 <div>
-                    <label for="type" class="block font-medium text-gray-700 mb-1">Report Type</label>
+                    <label for="type" class="block font-medium text-gray-700 mb-1">Tipe Laporan</label>
                     <select name="type" id="type" class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500" required>
                         <option value="" disabled selected>Pilih Jenis</option>
                         <option value="KEJAHATAN">Kejahatan</option>

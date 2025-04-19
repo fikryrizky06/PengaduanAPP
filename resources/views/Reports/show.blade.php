@@ -3,8 +3,8 @@
         <!-- Report Details Section -->
         <div class="bg-white shadow-md rounded-lg overflow-hidden">
             <div class="bg-blue-600 text-white px-6 py-4">
-                <h1 class="text-2xl font-bold">Report Details</h1>
-                <p class="text-sm">Report ID: <span class="font-semibold">{{ $report->id }}</span></p>
+                <h1 class="text-2xl font-bold">Detail Laporan</h1>
+                <p class="text-sm">ID Laporan: <span class="font-semibold">{{ $report->id }}</span></p>
             </div>
             <div class="p-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -13,19 +13,19 @@
                         @if($report->image)
                             <img src="{{ asset('storage/' . $report->image) }}" alt="Report Image" class="rounded-lg shadow-md mt-2">
                         @endif
-                        <p class="text-gray-700 pt-4"><strong>Voting:</strong>
+                        <p class="text-gray-700 pt-4"><strong>Suara:</strong>
                             <i class="fas fa-thumbs-up text-blue-500"></i> {{ $report->voting }}
                         </p>
-                        <p class="text-gray-700"><strong>Viewers:</strong> {{ $report->viewers }}</p>
+                        <p class="text-gray-700"><strong>Penonton:</strong> {{ $report->viewers }}</p>
                     </div>
 
                     <div>
-                        <p class="text-gray-700 pt-1"><strong>Description:</strong> {{ $report->description }}</p>
-                        <p class="text-gray-700 pt-1"><strong>Type:</strong> {{ $report->type }}</p>
-                        <p class="text-gray-700 pt-1"><strong>Province:</strong> {{ $report->province }}</p>
-                        <p class="text-gray-700 pt-1"><strong>Regency:</strong> {{ $report->regency }}</p>
-                        <p class="text-gray-700 pt-1"><strong>Subdistrict:</strong> {{ $report->subdistrict }}</p>
-                        <p class="text-gray-700 pt-1"><strong>Village:</strong> {{ $report->village }}</p>
+                        <p class="text-gray-700 pt-1"><strong>Deskripsi:</strong> {{ $report->description }}</p>
+                        <p class="text-gray-700 pt-1"><strong>Tipe:</strong> {{ $report->type }}</p>
+                        <p class="text-gray-700 pt-1"><strong>Provinsi:</strong> {{ $report->province }}</p>
+                        <p class="text-gray-700 pt-1"><strong>Kabupaten:</strong> {{ $report->regency }}</p>
+                        <p class="text-gray-700 pt-1"><strong>Kecamatan:</strong> {{ $report->subdistrict }}</p>
+                        <p class="text-gray-700 pt-1"><strong>Desa:</strong> {{ $report->village }}</p>
                         <p class="text-gray-700 pt-1"><strong>Status:</strong>
                             <span class="px-3 py-1 rounded-full text-white
                                 @if($report->statement == 'pending') bg-yellow-500
@@ -46,16 +46,16 @@
                 <form action="{{ route('report.updateStatus', $report->id) }}" method="POST" class="mt-4">
                     @csrf
                     <div class="mb-3">
-                        <label for="statement" class="form-label">Update Report Status</label>
+                        <label for="statement" class="form-label">Perbarui Status Laporan</label>
                         <select name="statement" id="statement" class="form-control" required
                                 @if($report->statement === 'done') disabled @endif>
-                            <option value="on_process" {{ $report->statement == 'on_process' ? 'selected' : '' }}>On Process</option>
-                            <option value="done" {{ $report->statement == 'done' ? 'selected' : '' }}>Done</option>
-                            <option value="rejected" {{ $report->statement == 'rejected' ? 'selected' : '' }}>Rejected</option>
+                            <option value="on_process" {{ $report->statement == 'on_process' ? 'selected' : '' }}>Dalam Proses</option>
+                            <option value="done" {{ $report->statement == 'done' ? 'selected' : '' }}>Selesai</option>
+                            <option value="rejected" {{ $report->statement == 'rejected' ? 'selected' : '' }}>Ditolak</option>
                         </select>
                     </div>
                     @if($report->statement !== 'done')
-                        <button type="submit" class="btn btn-primary">Update Status</button>
+                        <button type="submit" class="btn btn-primary">Perbarui Status</button>
                     @else
                         <button type="button" class="btn btn-secondary" disabled>Laporan telah ditangani</button>
                     @endif
@@ -67,12 +67,12 @@
 
         <!-- Comments Section -->
         <div class="mt-8">
-            <h2 class="text-xl font-bold mb-4">Comments</h2>
+            <h2 class="text-xl font-bold mb-4">Komentar</h2>
             <form action="{{ route('admin.report.comment', $report->id) }}" method="POST" class="mb-6">
                 @csrf
                 <textarea name="comment" class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500" rows="3" placeholder="Write your comment..." required></textarea>
                 <button type="submit" class="mt-3 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
-                    Submit Comment
+                    Masukkan Komentar
                 </button>
             </form>
 

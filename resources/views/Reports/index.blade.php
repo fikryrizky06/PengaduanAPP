@@ -24,30 +24,47 @@
         </div>
 
         <div class="bg-white shadow-md rounded-lg p-6 mb-6">
-            <h2 class="text-lg font-semibold text-gray-800 mb-4">Cari Pengaduan</h2>
-            <form method="GET" action="{{ route('report.index') }}" class="flex flex-wrap items-center space-x-4">
-                <input type="text" name="search" class="flex-grow border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Cari pengaduan..." value="{{ request('search') }}">
+    <h2 class="text-lg font-semibold text-gray-800 mb-4">Cari Pengaduan</h2>
+    <form method="GET" action="{{ route('report.index') }}" class="flex flex-wrap items-center space-x-4">
+        <input type="text" name="search"
+               class="flex-grow border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+               placeholder="Cari pengaduan..."
+               value="{{ request('search') }}">
 
-                <select name="type" class="border border-gray-300 rounded-lg p-2">
-                    <option value="">Semua Tipe</option>
-                    @foreach ($types as $type)
-                        <option value="{{ $type }}" {{ request('type') == $type ? 'selected' : '' }}>{{ ucfirst($type) }}</option>
-                    @endforeach
-                </select>
+        <select name="type" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="">Semua Tipe</option>
+            @foreach ($types as $type)
+                <option value="{{ $type }}" {{ request('type') == $type ? 'selected' : '' }}>
+                    {{ ucfirst($type) }}
+                </option>
+            @endforeach
+        </select>
 
-                <select name="province" class="border border-gray-300 rounded-lg p-2">
-                    <option value="">Semua Provinsi  </option>
-                    @foreach ($provinces as $province)
-                        <option value="{{ $province }}" {{ request('province') == $province ? 'selected' : '' }}>{{ $province }}</option>
-                    @endforeach
-                </select>
+        <select name="province" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="">Semua Provinsi</option>
+            @foreach ($provinces as $province)
+                <option value="{{ $province }}" {{ request('province') == $province ? 'selected' : '' }}>
+                    {{ $province }}
+                </option>
+            @endforeach
+        </select>
 
-                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
-                    Cari
-                </button>
-            </form>
+        <select name="status" class="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="">Semua Status</option>
+            @foreach(['on_process', 'done', 'rejected'] as $status)
+                <option value="{{ $status }}" {{ request('status') == $status ? 'selected' : '' }}>
+                    {{ $status === 'on_process' ? 'Diproses' :
+                       ($status === 'done' ? 'Selesai' :
+                       ($status === 'rejected' ? 'Ditolak' : ucfirst($status))) }}
+                </option>
+            @endforeach
+        </select>
 
-        </div>
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+            Cari
+        </button>
+    </form>
+</div>
 
         <div class="bg-white shadow-md rounded-lg p-6">
             <h2 class="text-lg font-semibold text-gray-800 mb-4">Daftar Pengaduan</h2>
@@ -70,16 +87,24 @@
                                 <td class="px-4 py-2 text-sm text-gray-700">{{ $report->description }}</td>
                                 <td class="px-4 py-2 text-sm text-gray-700">{{ $report->type }}</td>
                                 <td class="px-4 py-2 text-sm text-gray-700">{{ $report->province }}</td>
-                                <td class="px-4 py-2 text-sm">
-                                    <span class="px-3 py-1 rounded-full text-white
-                                        @if($report->statement == 'pending') bg-yellow-500
-                                        @elseif($report->statement == 'on_process') bg-blue-500
-                                        @elseif($report->statement == 'done') bg-green-500
-                                        @elseif($report->statement == 'rejected') bg-red-500
-                                        @endif">
-                                        {{ ucfirst($report->statement) }}
-                                    </span>
-                                </td>
+<td class="px-4 py-2 text-sm">
+    <span class="px-3 py-1 rounded-full text-white
+        @if($report->statement == 'pending') bg-yellow-500
+        @elseif($report->statement == 'on_process') bg-blue-500
+        @elseif($report->statement == 'done') bg-green-500
+        @elseif($report->statement == 'rejected') bg-red-500
+        @endif">
+        @if($report->statement == 'pending')
+            Menunggu
+        @elseif($report->statement == 'on_process')
+            Diproses
+        @elseif($report->statement == 'done')
+            Selesai
+        @elseif($report->statement == 'rejected')
+            Ditolak
+        @endif
+    </span>
+</td>
                                 <td class="px-4 py-2 text-sm">
                                     <div class="flex space-x-2">
                                         <a href="{{ route('report.show', $report->id) }}" class="bg-blue-600 text-white px-3 py-1 rounded-lg text-sm hover:bg-blue-700">
